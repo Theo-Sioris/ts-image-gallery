@@ -6,7 +6,7 @@
     }
 
     @for (image of images(); track image.id) {
-    <app-image-card [image]="image" />
+    <app-image-card [image]="image" (imageClicked)="imageClicked($event)" />
     }
   </section>
 

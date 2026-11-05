@@ -12,6 +12,7 @@ import {
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {FavoritesService} from '../../services/favorites.service';
 import {Image, ImagesService} from '../../services/images.service';
 import {ImageCard} from '../../shared/image-card/image-card';
 import {GallerySkeletons} from './components/gallery-skeletons/gallery-skeletons';
@@ -25,6 +26,7 @@ import {catchError, EMPTY, tap} from 'rxjs';
   styleUrl: './photos-page.scss',
 })
 export class PhotosPage implements OnInit, AfterViewInit {
+  readonly favoritesService = inject(FavoritesService);
   private readonly imagesService = inject(ImagesService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -76,6 +78,10 @@ export class PhotosPage implements OnInit, AfterViewInit {
         })
       )
       .subscribe();
+  }
+
+  imageClicked(image: Image): void {
+    this.favoritesService.add(image)
   }
 
   private setupIntersectionObserver() {
