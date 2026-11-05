@@ -6,7 +6,7 @@
     }
 
     @for (image of images(); track image.id) {
-    <app-image-card [image]="image" (imageClicked)="imageClicked($event)" />
+    <app-image-card [image]="image" [isFavorite]="favoriteIds().has(image.id)" (imageClicked)="imageClicked($event)" />
     }
   </section>
 

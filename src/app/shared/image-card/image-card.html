@@ -1,6 +1,7 @@
 <mat-card appearance="outlined">
-  <button matButton class="frame" type="button" aria-label="Select photograph"
-    (click)="imageClicked.emit(image())" [class.loading]="!loaded() && !failed()">
+  <div [attr.aria-label]="isFavorite() ? 'Photograph saved to favorites' : 'Select photograph'"
+       (click)="imageClicked.emit(image())"
+       [class.loading]="!loaded() && !failed()">
     @if (!failed()) {
     <img [src]="imageUrl()" alt="Gallery photograph"
       width="300" height="300" loading="lazy" decoding="async"
@@ -8,5 +9,9 @@
     } @else {
     <p class="fallback" role="status">Image unavailable</p>
     }
-  </button>
+  </div>
+  @if (isFavorite()) {
+    <mat-icon class="favorite-indicator" fontSet="material-symbols-outlined"
+      aria-label="Saved to favorites" [attr.aria-hidden]="false">star</mat-icon>
+  }
 </mat-card>

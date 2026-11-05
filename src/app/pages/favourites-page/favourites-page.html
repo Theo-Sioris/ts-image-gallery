@@ -1,10 +1,9 @@
 <main>
-  <h1>Favorites</h1>
   <section class="gallery" aria-label="Favorite photographs">
     @for (image of favorites.images(); track image.id) {
       <app-image-card [image]="image" />
     } @empty {
-      <div>
+      <div class="empty-state">
         <p>No favorites yet. Click a photograph on the Photos page to save it here.</p>
       </div>
     }

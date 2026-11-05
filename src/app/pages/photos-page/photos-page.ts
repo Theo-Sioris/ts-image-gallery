@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
@@ -36,6 +37,7 @@ export class PhotosPage implements OnInit, AfterViewInit {
   private nextPage = 1;
   readonly pageSize = 30;
 
+  readonly favoriteIds = computed(() => new Set(this.favoritesService.images().map(image => image.id)));
   readonly images = signal<Image[]>([]);
   readonly loading = signal(false);
   readonly error = signal(false);
@@ -81,7 +83,11 @@ export class PhotosPage implements OnInit, AfterViewInit {
   }
 
   imageClicked(image: Image): void {
-    this.favoritesService.add(image)
+    if (this.favoriteIds().has(image.id)) {
+      this.favoritesService.remove(image);
+    } else {
+      this.favoritesService.add(image);
+    }
   }
 
   private setupIntersectionObserver() {

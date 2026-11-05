@@ -17,6 +17,11 @@ export class FavoritesService {
     this.storageService.set(this.storageKey, this.images());
   }
 
+  remove(image: Image): void {
+    this.favoriteImages.update(images => images.filter(favorite => favorite.id !== image.id));
+    this.storageService.set(this.storageKey, this.images());
+  }
+
   private load(): Image[] {
     return this.storageService.get<Image[]>(this.storageKey) || [];
   }
