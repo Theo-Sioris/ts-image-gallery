@@ -1,0 +1,17 @@
+:host {
+  // Needed to display the skeletons in the parent grid
+  display: contents;
+}
+
+.skeleton {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-high);
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    background: var(--mat-sys-surface-container-low);
+  }
+}
