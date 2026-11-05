@@ -1,0 +1,24 @@
+<header>
+  <mat-toolbar>
+    <nav aria-label="Photo libraries">
+      <a
+        routerLink="/"
+        #photostreamLink="routerLinkActive"
+        routerLinkActive
+        [matButton]="photostreamLink.isActive ? 'filled' : 'outlined'"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Photos
+      </a>
+      <a
+        routerLink="/favorites"
+        #favoritesLink="routerLinkActive"
+        routerLinkActive
+        [matButton]="favoritesLink.isActive ? 'filled' : 'outlined'"
+      >
+        Favorites
+      </a>
+    </nav>
+  </mat-toolbar>
+  <mat-divider/>
+</header>
