@@ -1,5 +1,6 @@
 <mat-card appearance="outlined">
-  <div [attr.aria-label]="isFavorite() ? 'Photograph saved to favorites' : 'Select photograph'"
+  <div class="image-wrapper"
+    [attr.aria-label]="isFavorite() ? 'Photograph saved to favorites' : 'Select photograph'"
        (click)="imageClicked.emit(image())"
        [class.loading]="!loaded() && !failed()">
     @if (!failed()) {

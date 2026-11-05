@@ -11,7 +11,7 @@ export class FavoritesService {
   readonly images = this.favoriteImages.asReadonly();
 
   add(image: Image): void {
-    if (this.images().some(favorite => favorite.id === image.id)) return;
+    if (this.isFavorite(image)) return;
 
     this.favoriteImages.update(images => [...images, {id: image.id}]);
     this.storageService.set(this.storageKey, this.images());
@@ -20,6 +20,10 @@ export class FavoritesService {
   remove(image: Image): void {
     this.favoriteImages.update(images => images.filter(favorite => favorite.id !== image.id));
     this.storageService.set(this.storageKey, this.images());
+  }
+
+  isFavorite(image: Image): boolean {
+    return this.images().some(favorite => favorite.id === image.id)
   }
 
   private load(): Image[] {

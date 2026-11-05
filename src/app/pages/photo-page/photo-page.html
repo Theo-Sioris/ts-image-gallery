@@ -1,1 +1,14 @@
-<h1>Photo</h1>
+<main aria-label="Single photograph">
+  @if (!errorLoadingImage()) {
+    <img [src]="imageUrl()" [alt]="'Photograph ' + image().id"
+         (error)="errorLoadingImage.set(true)" />
+  } @else {
+    <p role="status">Image unavailable</p>
+  }
+  <div class="actions">
+    @if (isFavorite()){
+    <button matButton="filled"
+            (click)="removeFavorite()">Remove from favorites</button>
+    }
+  </div>
+</main>
