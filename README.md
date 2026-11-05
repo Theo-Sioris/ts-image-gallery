@@ -5,26 +5,33 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ## Image gallery
 
 The Photos route fetches metadata directly from Lorem Picsum using Angular HttpClient;
-there is no backend or proxy. `ImagesService` shares in-flight requests by page and
-page size, and constructs image URLs that preserve each photograph's aspect ratio.
+there is no backend or proxy. `ImagesService` requests metadata by page and page
+size, delays successful responses by 400ms as required by the assignment, and
+constructs URLs for square 300px thumbnails. It does not cache or share requests.
 `PhotosPage` owns signal-based pagination state and requests one page at a time.
-An IntersectionObserver with an 800px prefetch margin triggers subsequent pages.
-Failed pages can be retried without advancing pagination, and short or empty pages
-end the stream. Duplicate image IDs are filtered; a page with no new IDs also ends
-the stream to prevent repeatedly fetching a repeated terminal page.
+An IntersectionObserver with a 300px margin on all sides triggers subsequent pages.
+Failed pages can be retried without advancing pagination.
 
-`ImageCard` uses native lazy loading, responsive sources, reserved image dimensions,
-a skeleton, and an image failure state. The UI uses the existing Material theme,
-cards, buttons, and progress spinner, with reduced-motion support. HTTP subscriptions,
-the observer, and scheduled rendering work are cleaned up on route destruction.
+`ImageCard` uses native lazy loading, asynchronous decoding, explicit 300 × 300
+image dimensions, a loading animation, and an image failure state. The initial
+gallery load shows skeletons. The UI uses Angular Material theming, cards, buttons,
+and a progress spinner; image animations respect reduced-motion preferences.
+HTTP subscriptions and the observer are cleaned up on route destruction.
+
+Clicking a photo in the gallery toggles its favorite status. Favorites are stored
+in localStorage, and clicking a saved photo on the Favorites route opens its detail
+view. The detail view requests a 1920 × 1080 image and allows removing a favorite.
 
 Run focused and existing tests with `npm test -- --watch=false`, and check the
-production bundle with `npm run build`. Tests cover pagination, concurrent request
-deduplication, errors and retry, end-of-results, image states, and destruction.
+production bundle with `npm run build`. Tests cover initial and subsequent page
+loads, prevention of overlapping page requests, errors and retry, image loading
+and failure states, request cancellation and observer cleanup, favorite persistence,
+storage failures, and routed photo details.
 
-Virtualization is intentionally deferred. Consider it when profiling a long session
-shows that thousands of retained cards cause excessive DOM memory, layout work, or
-scrolling latency; account for variable image heights and preserve scroll position.
+Current pagination limitations: empty or short pages do not mark the end of the
+results, and incoming image IDs are not deduplicated. Automatic loading can stall
+if the sentinel remains within the observer's margin after a page loads. The gallery
+retains all loaded cards in the DOM; virtualization is not implemented.
 
 ## Development server
 
@@ -72,13 +79,7 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+No end-to-end test framework or test target is configured in this project.
 
 ## Additional Resources
 
