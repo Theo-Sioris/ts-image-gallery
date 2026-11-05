@@ -1,4 +1,3 @@
-
 img {
   display: block;
   width: 100%;
@@ -6,6 +5,11 @@ img {
   object-fit: cover;
   opacity: 0;
   transition: opacity 250ms ease;
+}
+
+.image-wrapper {
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 img.loaded {
