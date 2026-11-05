@@ -1,0 +1,11 @@
+mat-toolbar {
+  height: auto;
+  min-height: var(--mat-toolbar-standard-height, 64px);
+}
+
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
