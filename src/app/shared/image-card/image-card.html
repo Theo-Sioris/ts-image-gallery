@@ -1,0 +1,11 @@
+<mat-card appearance="outlined">
+  <div class="frame" [class.loading]="!loaded() && !failed()">
+    @if (!failed()) {
+    <img [src]="image()" alt="Gallery photograph"
+      width="300" height="300" loading="lazy" decoding="async"
+      [class.loaded]="loaded()" (load)="loaded.set(true)" (error)="failed.set(true)" />
+    } @else {
+    <p class="fallback" role="status">Image unavailable</p>
+    }
+  </div>
+</mat-card>

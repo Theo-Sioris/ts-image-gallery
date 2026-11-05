@@ -1,0 +1,57 @@
+mat-card {
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+img.loaded {
+  opacity: 1;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+
+// region AI smooth loading visual effect
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.frame {
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--mat-sys-surface-container-high);
+}
+
+
+@keyframes pulse {
+  to {
+    background: var(--mat-sys-surface-container-low);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none;
+  }
+  img {
+    transition: none;
+  }
+}
+
+// endregion

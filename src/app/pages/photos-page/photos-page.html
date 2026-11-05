@@ -1,1 +1,24 @@
-<h1>Gallery</h1>
+<main>
+  <section class="gallery" aria-label="Photo gallery" [attr.aria-busy]="loading()">
+    <!--  This is provided to make the initial load feel nicer  -->
+    @if (loading() && images().length === 0) {
+      <app-gallery-skeletons />
+    }
+
+    @for (image of images(); track image.id) {
+    <app-image-card [image]="image" />
+    }
+  </section>
+
+  <div #sentinel class="sentinel" aria-hidden="true"></div>
+
+  <div class="status" aria-live="polite">
+    @if (loading()) {
+    <mat-spinner diameter="28" aria-label="Loading photographs" />
+    <p>{{ images().length ? 'Finding more photographs…' : 'Loading photographs…' }}</p>
+    } @else if (error()) {
+    <p>We couldn’t load the photographs. Please try again.</p>
+    <button matButton="filled" (click)="loadNext()">Retry</button>
+    }
+  </div>
+</main>
