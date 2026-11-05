@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {Image} from '../../services/images.service';
 import {MatButtonModule} from '@angular/material/button';
 import {FavoritesService} from '../../services/favorites.service';
@@ -8,7 +8,7 @@ import {Gallery} from '../../shared/gallery/gallery';
 
 @Component({
   selector: 'app-favourites-page',
-  imports: [Gallery, ImageCard, MatButtonModule, RouterLink],
+  imports: [Gallery, ImageCard, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './favourites-page.html',
   styleUrl: './favourites-page.scss',

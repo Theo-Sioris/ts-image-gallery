@@ -72,13 +72,18 @@ describe('PhotosPage', () => {
     expect(fixture.nativeElement.querySelector('app-gallery-skeletons')).toBeNull();
   });
 
-  it('saves clicked photos as favorites without duplicates', () => {
+  it('toggles clicked photos in favorites and updates their saved indicator', () => {
     respond(0, page());
     fixture.detectChanges();
-    const button = fixture.nativeElement.querySelector('app-image-card button');
+    const button = fixture.nativeElement.querySelector('app-image-card .image-wrapper');
     button.click();
-    button.click();
+    fixture.detectChanges();
     expect(TestBed.inject(FavoritesService).images()).toEqual([{id: '0'}]);
+    expect(fixture.nativeElement.querySelector('app-image-card mat-icon')).not.toBeNull();
+    button.click();
+    fixture.detectChanges();
+    expect(TestBed.inject(FavoritesService).images()).toEqual([]);
+    expect(fixture.nativeElement.querySelector('app-image-card mat-icon')).toBeNull();
   });
 
   it('ignores non-intersecting entries and prevents overlapping page requests', () => {

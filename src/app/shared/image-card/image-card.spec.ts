@@ -32,14 +32,24 @@ describe('ImageCard', () => {
     expect(img.getAttribute('height')).toBe('300');
     expect(img.getAttribute('alt')).toBe('Gallery photograph');
     expect(img.classList.contains('loaded')).toBe(false);
-    expect(fixture.nativeElement.querySelector('.frame').classList.contains('loading')).toBe(true);
+    expect(fixture.nativeElement.querySelector('.image-wrapper').classList.contains('loading')).toBe(true);
   });
 
   it('emits the image when clicked', () => {
     const clicked = vi.fn();
     fixture.componentInstance.imageClicked.subscribe(clicked);
-    fixture.nativeElement.querySelector('button').click();
+    fixture.nativeElement.querySelector('.image-wrapper').click();
     expect(clicked).toHaveBeenCalledExactlyOnceWith({id: '42'});
+  });
+
+  it('shows the saved indicator only for favorite images', () => {
+    expect(fixture.nativeElement.querySelector('mat-icon')).toBeNull();
+    fixture.componentRef.setInput('isFavorite', true);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('mat-icon').getAttribute('aria-label')).toBe('Saved to favorites');
+    fixture.componentRef.setInput('isFavorite', false);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('mat-icon')).toBeNull();
   });
 
   it('removes the placeholder and reveals the image when it loads', () => {
@@ -47,7 +57,7 @@ describe('ImageCard', () => {
     img.dispatchEvent(new Event('load'));
     fixture.detectChanges();
     expect(img.classList.contains('loaded')).toBe(true);
-    expect(fixture.nativeElement.querySelector('.frame').classList.contains('loading')).toBe(false);
+    expect(fixture.nativeElement.querySelector('.image-wrapper').classList.contains('loading')).toBe(false);
   });
 
   it('replaces a failed image with the fallback state', () => {
@@ -55,6 +65,6 @@ describe('ImageCard', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('img')).toBeNull();
     expect(fixture.nativeElement.querySelector('[role="status"]').textContent).toContain('Image unavailable');
-    expect(fixture.nativeElement.querySelector('.frame').classList.contains('loading')).toBe(false);
+    expect(fixture.nativeElement.querySelector('.image-wrapper').classList.contains('loading')).toBe(false);
   });
 });

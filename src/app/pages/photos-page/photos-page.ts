@@ -18,7 +18,7 @@ import {Image, ImagesService} from '../../services/images.service';
 import {ImageCard} from '../../shared/image-card/image-card';
 import {Gallery} from '../../shared/gallery/gallery';
 import {GallerySkeletons} from './components/gallery-skeletons/gallery-skeletons';
-import {catchError, EMPTY, tap} from 'rxjs';
+import {catchError, EMPTY, finalize, tap} from 'rxjs';
 
 @Component({
   selector: 'app-photos-page',
@@ -76,7 +76,7 @@ export class PhotosPage implements OnInit, AfterViewInit {
           this.error.set(true);
           return EMPTY;
         }),
-        tap(() => {
+        finalize(() => {
           this.loading.set(false);
         })
       )

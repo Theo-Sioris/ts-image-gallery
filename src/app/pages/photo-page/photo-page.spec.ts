@@ -24,8 +24,15 @@ describe('PhotoPage', () => {
     harness.detectChanges();
     expect(favorites.images()).toEqual([{id: '43'}]);
     expect(JSON.parse(localStorage.getItem('favourite_images')!)).toEqual([{id: '43'}]);
-    expect(harness.routeNativeElement!.querySelector('button')!.disabled).toBe(true);
+    expect(harness.routeNativeElement!.querySelector('button')).toBeNull();
   });
+
+  it('hides the removal action for a photo that is not a favorite', async () => {
+    const harness = await RouterTestingHarness.create('/photos/42');
+    expect(harness.routeNativeElement!.querySelector('img')!.alt).toBe('Photograph 42');
+    expect(harness.routeNativeElement!.querySelector('button')).toBeNull();
+  });
+
 
   it('updates the photo when navigating between IDs and handles a failed image', async () => {
     const harness = await RouterTestingHarness.create('/photos/42');
