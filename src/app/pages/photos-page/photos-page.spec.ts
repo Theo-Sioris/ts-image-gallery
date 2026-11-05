@@ -1,5 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Subject} from 'rxjs';
+import {FavoritesService} from '../../services/favorites.service';
 import {PhotosPage} from './photos-page';
 import {Image, ImagesService} from '../../services/images.service';
 
@@ -23,6 +24,7 @@ describe('PhotosPage', () => {
   };
 
   beforeEach(async () => {
+    localStorage.clear();
     requests = [];
     getImages = vi.fn(() => {
       const request = new Subject<Image[]>();
@@ -50,6 +52,7 @@ describe('PhotosPage', () => {
 
   afterEach(() => {
     fixture.destroy();
+    localStorage.clear();
     vi.unstubAllGlobals();
     vi.clearAllMocks();
   });
@@ -67,6 +70,15 @@ describe('PhotosPage', () => {
     expect(fixture.componentInstance.loading()).toBe(false);
     expect(fixture.nativeElement.querySelectorAll('app-image-card')).toHaveLength(30);
     expect(fixture.nativeElement.querySelector('app-gallery-skeletons')).toBeNull();
+  });
+
+  it('saves clicked photos as favorites without duplicates', () => {
+    respond(0, page());
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('app-image-card button');
+    button.click();
+    button.click();
+    expect(TestBed.inject(FavoritesService).images()).toEqual([{id: '0'}]);
   });
 
   it('ignores non-intersecting entries and prevents overlapping page requests', () => {

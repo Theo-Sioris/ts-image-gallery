@@ -1,0 +1,11 @@
+main {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 40px 16px;
+}
+
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+}

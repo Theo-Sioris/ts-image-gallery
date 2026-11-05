@@ -23,7 +23,7 @@ describe('ImageCard', () => {
 
   it('transforms the image input into a URL and renders a fixed-size lazy image', () => {
     expect(imageUrl).toHaveBeenCalledWith({id: '42'});
-    expect(fixture.componentInstance.image()).toBe('https://picsum.photos/id/42/300');
+    expect(fixture.componentInstance.imageUrl()).toBe('https://picsum.photos/id/42/300');
     const img: HTMLImageElement = fixture.nativeElement.querySelector('img');
     expect(img.getAttribute('src')).toBe('https://picsum.photos/id/42/300');
     expect(img.getAttribute('loading')).toBe('lazy');
@@ -33,6 +33,13 @@ describe('ImageCard', () => {
     expect(img.getAttribute('alt')).toBe('Gallery photograph');
     expect(img.classList.contains('loaded')).toBe(false);
     expect(fixture.nativeElement.querySelector('.frame').classList.contains('loading')).toBe(true);
+  });
+
+  it('emits the image when clicked', () => {
+    const clicked = vi.fn();
+    fixture.componentInstance.imageClicked.subscribe(clicked);
+    fixture.nativeElement.querySelector('button').click();
+    expect(clicked).toHaveBeenCalledExactlyOnceWith({id: '42'});
   });
 
   it('removes the placeholder and reveals the image when it loads', () => {

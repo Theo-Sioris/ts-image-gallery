@@ -1,1 +1,11 @@
-<h1>Favourites</h1>
+<main>
+  <app-gallery label="Favorite photographs">
+    @for (image of favorites.images(); track image.id) {
+      <app-image-card [image]="image" />
+    } @empty {
+      <div class="empty-state">
+        <p>No favorites yet. Click a photograph on the Photos page to save it here.</p>
+      </div>
+    }
+  </app-gallery>
+</main>
