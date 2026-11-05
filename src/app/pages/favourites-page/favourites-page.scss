@@ -4,18 +4,6 @@ main {
   padding: 40px 16px;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  align-items: start;
-}
-
-@media (min-width: 600px) {
-  .gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
 
 .empty-state {
   grid-column: 1 / -1;

@@ -1,5 +1,5 @@
 <main>
-  <section class="gallery" aria-label="Favorite photographs">
+  <app-gallery label="Favorite photographs">
     @for (image of favorites.images(); track image.id) {
       <app-image-card [image]="image" />
     } @empty {
@@ -7,5 +7,5 @@
         <p>No favorites yet. Click a photograph on the Photos page to save it here.</p>
       </div>
     }
-  </section>
+  </app-gallery>
 </main>

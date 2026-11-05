@@ -1,5 +1,5 @@
 <main>
-  <section class="gallery" aria-label="Photo gallery" [attr.aria-busy]="loading()">
+  <app-gallery label="Photo gallery" [busy]="loading()">
     <!--  This is provided to make the initial load feel nicer  -->
     @if (loading() && images().length === 0) {
       <app-gallery-skeletons />
@@ -8,7 +8,7 @@
     @for (image of images(); track image.id) {
     <app-image-card [image]="image" [isFavorite]="favoriteIds().has(image.id)" (imageClicked)="imageClicked($event)" />
     }
-  </section>
+  </app-gallery>
 
   <div #sentinel class="sentinel" aria-hidden="true"></div>
 

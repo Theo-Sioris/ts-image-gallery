@@ -16,12 +16,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {FavoritesService} from '../../services/favorites.service';
 import {Image, ImagesService} from '../../services/images.service';
 import {ImageCard} from '../../shared/image-card/image-card';
+import {Gallery} from '../../shared/gallery/gallery';
 import {GallerySkeletons} from './components/gallery-skeletons/gallery-skeletons';
 import {catchError, EMPTY, tap} from 'rxjs';
 
 @Component({
   selector: 'app-photos-page',
-  imports: [ImageCard, GallerySkeletons, MatButtonModule, MatProgressSpinnerModule],
+  imports: [Gallery, ImageCard, GallerySkeletons, MatButtonModule, MatProgressSpinnerModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './photos-page.html',
   styleUrl: './photos-page.scss',

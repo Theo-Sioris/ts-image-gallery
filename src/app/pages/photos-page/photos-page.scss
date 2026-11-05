@@ -4,13 +4,6 @@ main {
   padding: 40px 16px;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  align-items: start;
-}
-
 .sentinel {
   height: 1px;
 }
@@ -25,8 +18,3 @@ main {
   padding: 24px 0;
 }
 
-@media (min-width: 600px) {
-  .gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
