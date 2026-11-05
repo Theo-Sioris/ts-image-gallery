@@ -43,4 +43,21 @@ describe('PhotoPage', () => {
     harness.detectChanges();
     expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
   });
+  it('renders the next photo after an image fails on the reused route component', async () => {
+    const harness = await RouterTestingHarness.create('/photos/42');
+    const originalComponent = harness.routeDebugElement!.componentInstance;
+    harness.routeNativeElement!.querySelector('img')!.dispatchEvent(new Event('error'));
+    harness.detectChanges();
+    expect(harness.routeNativeElement!.querySelector('img')).toBeNull();
+    expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
+
+    await harness.navigateByUrl('/photos/43');
+    expect(harness.routeDebugElement!.componentInstance).toBe(originalComponent);
+    expect(harness.routeNativeElement!.querySelector('img')!.src).toContain('/id/43/1920/1080');
+    expect(harness.routeNativeElement!.textContent).not.toContain('Image unavailable');
+
+    harness.routeNativeElement!.querySelector('img')!.dispatchEvent(new Event('error'));
+    harness.detectChanges();
+    expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
+  });
 });
