@@ -14,7 +14,7 @@
 
   <div class="status" aria-live="polite">
     @if (loading()) {
-    <mat-spinner diameter="28" aria-label="Loading photographs" />
+    <mat-spinner diameter="68" aria-label="Loading photographs" />
     <p>{{ images().length ? 'Finding more photographs…' : 'Loading photographs…' }}</p>
     } @else if (error()) {
     <p>We couldn’t load the photographs. Please try again.</p>

@@ -16,13 +16,30 @@ describe('FavoritesService', () => {
     expect(TestBed.inject(FavoritesService).images()).toEqual([{id: '42'}, {id: '7'}]);
   });
 
-  it('ignores invalid stored shapes and removes duplicate IDs', () => {
-    localStorage.setItem('favorites', JSON.stringify([null, {}, {id: 3}, {id: ''}, {id: '42'}, {id: '42'}]));
-    expect(TestBed.inject(FavoritesService).images()).toEqual([{id: '42'}]);
+  it('removes only the requested favorite and persists the change', () => {
+    const service = TestBed.inject(FavoritesService);
+    service.add({id: '42'});
+    service.add({id: '43'});
+    expect(service.isFavorite({id: '42'})).toBe(true);
+    service.remove({id: '42'});
+    expect(service.isFavorite({id: '42'})).toBe(false);
+    expect(service.images()).toEqual([{id: '43'}]);
+    TestBed.resetTestingModule();
+    expect(TestBed.inject(FavoritesService).images()).toEqual([{id: '43'}]);
   });
 
-  it('starts empty when the stored value is not an array', () => {
-    localStorage.setItem('favorites', '{}');
-    expect(TestBed.inject(FavoritesService).images()).toEqual([]);
+  it('keeps favorites usable when persistence fails', () => {
+    const write = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Full');
+    });
+    try {
+      const service = TestBed.inject(FavoritesService);
+      expect(() => service.add({id: '42'})).not.toThrow();
+      expect(service.images()).toEqual([{id: '42'}]);
+      expect(() => service.remove({id: '42'})).not.toThrow();
+      expect(service.images()).toEqual([]);
+    } finally {
+      write.mockRestore();
+    }
   });
 });

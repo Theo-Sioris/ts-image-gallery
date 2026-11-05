@@ -24,8 +24,15 @@ describe('PhotoPage', () => {
     harness.detectChanges();
     expect(favorites.images()).toEqual([{id: '43'}]);
     expect(JSON.parse(localStorage.getItem('favourite_images')!)).toEqual([{id: '43'}]);
-    expect(harness.routeNativeElement!.querySelector('button')!.disabled).toBe(true);
+    expect(harness.routeNativeElement!.querySelector('button')).toBeNull();
   });
+
+  it('hides the removal action for a photo that is not a favorite', async () => {
+    const harness = await RouterTestingHarness.create('/photos/42');
+    expect(harness.routeNativeElement!.querySelector('img')!.alt).toBe('Photograph 42');
+    expect(harness.routeNativeElement!.querySelector('button')).toBeNull();
+  });
+
 
   it('updates the photo when navigating between IDs and handles a failed image', async () => {
     const harness = await RouterTestingHarness.create('/photos/42');
@@ -33,6 +40,23 @@ describe('PhotoPage', () => {
     const img = harness.routeNativeElement!.querySelector('img')!;
     expect(img.src).toContain('/id/43/');
     img.dispatchEvent(new Event('error'));
+    harness.detectChanges();
+    expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
+  });
+  it('renders the next photo after an image fails on the reused route component', async () => {
+    const harness = await RouterTestingHarness.create('/photos/42');
+    const originalComponent = harness.routeDebugElement!.componentInstance;
+    harness.routeNativeElement!.querySelector('img')!.dispatchEvent(new Event('error'));
+    harness.detectChanges();
+    expect(harness.routeNativeElement!.querySelector('img')).toBeNull();
+    expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
+
+    await harness.navigateByUrl('/photos/43');
+    expect(harness.routeDebugElement!.componentInstance).toBe(originalComponent);
+    expect(harness.routeNativeElement!.querySelector('img')!.src).toContain('/id/43/1920/1080');
+    expect(harness.routeNativeElement!.textContent).not.toContain('Image unavailable');
+
+    harness.routeNativeElement!.querySelector('img')!.dispatchEvent(new Event('error'));
     harness.detectChanges();
     expect(harness.routeNativeElement!.textContent).toContain('Image unavailable');
   });

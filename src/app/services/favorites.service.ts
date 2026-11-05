@@ -5,7 +5,7 @@ import {StorageService} from './storage.service';
 @Injectable({providedIn: 'root'})
 export class FavoritesService {
   private readonly storageService = inject(StorageService);
-  private readonly storageKey = 'favourite_images';
+  private readonly storageKey = 'FAVOURITE_IMAGES';
 
   private readonly favoriteImages = signal<Image[]>(this.load());
   readonly images = this.favoriteImages.asReadonly();

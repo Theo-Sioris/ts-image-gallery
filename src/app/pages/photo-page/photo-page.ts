@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, linkedSignal} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -30,7 +30,10 @@ export class PhotoPage {
   readonly imageUrl = computed(() => `https://picsum.photos/id/${this.image().id}/1920/1080`);
   readonly isFavorite = computed(() => this.favorites.isFavorite(this.image()));
 
-  readonly errorLoadingImage = signal(false);
+  readonly errorLoadingImage = linkedSignal({
+    source: () => this.image().id,
+    computation: () => false,
+  });
 
   removeFavorite() {
     this.favorites.remove(this.image())
